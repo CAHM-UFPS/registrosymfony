@@ -1,0 +1,22 @@
+sync:
+  defaults:
+    mode: "two-way-resolved"
+    ignore:
+      paths:
+        - var
+        - vendor
+        - "*.lock"
+    permissions:
+      defaultFileMode: 0666
+      defaultDirectoryMode: 0777
+  code:
+    alpha: "./"
+    beta: "kum0@137.184.57.62:~/Registro"
+  var:
+    mode: "one-way-replica"
+    alpha: "kum0@137.184.57.62:~/Registro/var"
+    beta: "./var"
+  vendor:
+    mode: "one-way-replica"
+    alpha: "kum0@137.184.57.62:~/Registro/vendor"
+    beta: "./vendor"
