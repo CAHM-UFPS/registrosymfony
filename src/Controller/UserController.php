@@ -26,6 +26,6 @@ class UserController extends AbstractController
             return $this->json([], 204);
         }
 
-        return $this->json([], 400);
+        return $this->json($form->getErrors(true), 400);
     }
 }
