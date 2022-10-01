@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Document\User;
+use App\Form\LoginType;
 use App\Form\UserType;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,8 +18,8 @@ class UserController extends AbstractController
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-        //$form->submit($request->toArray());
+        //$form->handleRequest($request);
+        $form->submit($request->toArray());
         //dd($form->isValid());
         if ($form->isSubmitted() && $form->isValid()) {
             if ($user->isAuthorization()) {
@@ -37,6 +38,18 @@ class UserController extends AbstractController
     #[Route('/list', name: 'listUsers', methods: ['GET'])]
     public function read(DocumentManager $documentManager): Response
     {
-        return $this->json($documentManager->getRepository(User::class)->findAll());
+        return $this->json($documentManager->getRepository(User::class)->findAll(), Response::HTTP_OK);
+    }
+
+    #[Route('/login', name: 'login', methods: ['POST'])]
+    public function login(DocumentManager $documentManager, Request $request): Response
+    {
+        $form = $this->createForm(LoginType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $form->getData();
+        }
+        return $this->json();
     }
 }
