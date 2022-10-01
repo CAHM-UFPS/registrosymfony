@@ -3,46 +3,60 @@
 namespace App\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[MongoDB\Document]
-class User
+class User //implements PasswordAuthenticatedUserInterface
 {
     #[MongoDB\Id]
     private $id;
 
-    #[MongoDB\Field]
+    #[MongoDB\Field(type: 'string')]
     #[Assert\NotBlank]
-    #[Assert\NotNull]
     private string $fullName;
 
-    #[MongoDB\Field]
+    #[MongoDB\Field(type: 'string')]
     #[Assert\NotBlank]
-    #[Assert\NotNull]
     private string $user;
 
-    #[MongoDB\Field]
+    #[MongoDB\Field(type: 'string')]
     #[Assert\NotBlank]
-    #[Assert\NotNull]
     private string $password;
 
-    #[MongoDB\Field]
+    #[MongoDB\Field(type: 'string')]
     #[Assert\NotBlank]
-    #[Assert\NotNull]
     private string $address;
 
-    #[MongoDB\Field]
+    #[MongoDB\Field(type: 'string')]
     #[Assert\NotBlank]
-    #[Assert\NotNull]
     private string $phone;
 
-    #[MongoDB\Field]
+    #[MongoDB\Field(type: 'string')]
     #[Assert\NotBlank]
-    #[Assert\NotNull]
+    #[Assert\Email( message: "Not is a valid email" )]
     private string $email;
 
-    #[MongoDB\Field]
+    #[MongoDB\Field(type: 'bool')]
     private bool $authorization = false;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     * @return User
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
 
     /**
      * @return string
