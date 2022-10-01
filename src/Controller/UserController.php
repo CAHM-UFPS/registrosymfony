@@ -18,12 +18,12 @@ class UserController extends AbstractController
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-
+        //dd($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $documentManager->persist($user);
             $documentManager->flush();
 
-            return $this->json([], 204);
+            return $this->json("algo", 204);
         }
 
         return $this->json($form->getErrors(true), 400);
