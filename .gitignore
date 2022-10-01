@@ -7,4 +7,6 @@
 /public/bundles/
 /var/
 /vendor/
+/mutagen.yml/
+/mutagen.yml.lock/
 ###< symfony/framework-bundle ###
