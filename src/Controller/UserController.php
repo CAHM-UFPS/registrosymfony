@@ -18,9 +18,8 @@ class UserController extends AbstractController
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
-        //$form->handleRequest($request);
-        $form->submit($request->toArray());
-        //dd($form->isValid());
+        $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             if ($user->isAuthorization()) {
                 $documentManager->persist($user);
