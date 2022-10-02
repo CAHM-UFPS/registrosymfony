@@ -12,10 +12,13 @@ class Products
     #[MongoDB\Id]
     private $id;
 
-    #[MongoDB\Field]
+    #[MongoDB\Field(type: 'string')]
+    private string $name;
+
+    #[MongoDB\Field(type: 'int')]
     private int $quantityProduct;
 
-    #[MongoDB\Field]
+    #[MongoDB\Field(type: 'int')]
     private int $price;
 
     /**
@@ -34,6 +37,22 @@ class Products
     {
         $this->id = $id;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
     }
 
     /**

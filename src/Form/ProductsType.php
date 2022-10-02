@@ -12,6 +12,7 @@ class ProductsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('name')
             ->add('quantityProduct')
             ->add('price')
         ;
@@ -20,7 +21,13 @@ class ProductsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-           'data_class' => Products::class
+            'csrf_protection' => false,
+            'data_class' => Products::class
         ]);
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return '';
     }
 }
