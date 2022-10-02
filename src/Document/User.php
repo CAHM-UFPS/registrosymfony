@@ -35,7 +35,6 @@ class User //implements PasswordAuthenticatedUserInterface
     #[MongoDB\Field(type: 'string')]
     #[Assert\NotBlank]
     #[Assert\Email( message: "Not is a valid email" )]
-    #[Assert\Unique]
     private string $email;
 
     #[MongoDB\Field(type: 'bool')]

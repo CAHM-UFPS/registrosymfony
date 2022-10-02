@@ -11,10 +11,10 @@ class Order
     #[MongoDB\Id]
     private $id;
 
-    #[MongoDB\Field(type: User::class)]
+    #[MongoDB\Field]
     private User $user;
 
-    #[MongoDB\Field(type: Products::class)]
+    #[MongoDB\Field]
     private Products $products;
 
     #[MongoDB\Field(type: 'string')]
