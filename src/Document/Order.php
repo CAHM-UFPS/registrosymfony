@@ -8,18 +8,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[MongoDB\Document]
 class Order
 {
-
     #[MongoDB\Id]
     private $id;
 
-    #[MongoDB\Field]
-    private string $user;
+    #[MongoDB\Field(type: User::class)]
+    private User $user;
 
-    #[MongoDB\Field]
+    #[MongoDB\Field(type: Products::class)]
+    private Products $products;
+
+    #[MongoDB\Field(type: 'string')]
     private string $sendAddress;
 
-    #[MongoDB\Field]
-    private string $totalOrder;
+    #[MongoDB\Field(type: 'int')]
+    private int $totalOrder = 0;
 
     /**
      * @return mixed
@@ -40,20 +42,38 @@ class Order
     }
 
     /**
-     * @return string
+     * @return ?User
      */
-    public function getUser(): string
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
     /**
-     * @param string $user
-     * @return Order
+     * @param User $user
+     * @return ?Order
      */
-    public function setUser(string $user): Order
+    public function setUser(User $user): ?Order
     {
         $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * @return ?Products
+     */
+    public function getProducts(): ?Products
+    {
+        return $this->products;
+    }
+
+    /**
+     * @param Products $products
+     * @return ?Order
+     */
+    public function setProducts(Products $products): ?Order
+    {
+        $this->products = $products;
         return $this;
     }
 
@@ -76,18 +96,19 @@ class Order
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getTotalOrder(): string
+    public function getTotalOrder(Products $products): int
     {
+        $this->totalOrder += $products->getPrice() * $products->getQuantityProduct();
         return $this->totalOrder;
     }
 
     /**
-     * @param string $totalOrder
+     * @param int $totalOrder
      * @return Order
      */
-    public function setTotalOrder(string $totalOrder): Order
+    public function setTotalOrder(int $totalOrder): Order
     {
         $this->totalOrder = $totalOrder;
         return $this;
