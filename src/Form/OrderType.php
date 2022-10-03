@@ -14,8 +14,8 @@ class OrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('user', User::class)
-            ->add('products', Products::class)
+            ->add('user')
+            ->add('products')
             ->add('sendAddress')
             ->add('totalOrder')
         ;

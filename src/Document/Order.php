@@ -12,15 +12,19 @@ class Order
     private $id;
 
     #[MongoDB\Field]
+    #[Assert\Type(type: User::class)]
     private User $user;
 
     #[MongoDB\Field]
+    #[Assert\Type(type: Products::class)]
     private Products $products;
 
     #[MongoDB\Field(type: 'string')]
+    #[Assert\NotBlank]
     private string $sendAddress;
 
     #[MongoDB\Field(type: 'int')]
+    #[Assert\PositiveOrZero]
     private int $totalOrder = 0;
 
     /**
