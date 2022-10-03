@@ -3,6 +3,7 @@
 namespace App\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use MongoDB\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[MongoDB\Document]
@@ -11,17 +12,9 @@ class Order
     #[MongoDB\Id]
     private $id;
 
-    #[MongoDB\Field]
-    #[Assert\Type(type: User::class)]
-    private User $user;
-
-    #[MongoDB\Field]
-    #[Assert\Type(type: Products::class)]
-    private Products $products;
-
-    #[MongoDB\Field(type: 'string')]
-    #[Assert\NotBlank]
-    private string $sendAddress;
+    //#[MongoDB\Field]
+    //#[MongoDB\ReferenceMany(targetDocument: Products::class)]
+    //private Collection $products;
 
     #[MongoDB\Field(type: 'int')]
     #[Assert\PositiveOrZero]
@@ -46,56 +39,20 @@ class Order
     }
 
     /**
-     * @return ?User
+     * @return Collection
      */
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param User $user
-     * @return ?Order
-     */
-    public function setUser(User $user): ?Order
-    {
-        $this->user = $user;
-        return $this;
-    }
-
-    /**
-     * @return ?Products
-     */
-    public function getProducts(): ?Products
+    public function getProducts(): Collection
     {
         return $this->products;
     }
 
     /**
-     * @param Products $products
-     * @return ?Order
-     */
-    public function setProducts(Products $products): ?Order
-    {
-        $this->products = $products;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSendAddress(): string
-    {
-        return $this->sendAddress;
-    }
-
-    /**
-     * @param string $sendAddress
+     * @param Collection $products
      * @return Order
      */
-    public function setSendAddress(string $sendAddress): Order
+    public function setProducts(Collection $products): Order
     {
-        $this->sendAddress = $sendAddress;
+        $this->products = $products;
         return $this;
     }
 

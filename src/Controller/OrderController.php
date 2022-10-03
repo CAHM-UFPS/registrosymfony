@@ -13,11 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/order')]
 class OrderController extends AbstractController
 {
+    #[Route('/create', name: 'createOrder', methods: ['POST'])]
     public function create(DocumentManager $documentManager, Request $request): Response
     {
-        $order = new Order();
-        $form = $this->createForm(OrderType::class, $order);
-        $form->handleRequest($request);
+
 
         return $this->json();
     }

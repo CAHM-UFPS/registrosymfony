@@ -2,12 +2,15 @@
 
 namespace App\Document;
 
+use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[MongoDB\Document]
-class User //implements PasswordAuthenticatedUserInterface
+#[MongoDB\HasLifecycleCallbacks]
+#[Unique('email')]
+class User implements PasswordAuthenticatedUserInterface
 {
     #[MongoDB\Id]
     private $id;
@@ -39,6 +42,9 @@ class User //implements PasswordAuthenticatedUserInterface
 
     #[MongoDB\Field(type: 'bool')]
     private bool $authorization = false;
+
+    #[MongoDB\Field(type: 'string')]
+    private string $token;
 
     /**
      * @return mixed
@@ -181,6 +187,25 @@ class User //implements PasswordAuthenticatedUserInterface
     public function setAuthorization(bool $authorization): User
     {
         $this->authorization = $authorization;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param string $token
+     * @return User
+     */
+    #[MongoDB\PrePersist]
+    public function setToken(): User
+    {
+        $this->token = md5($this->getEmail());
         return $this;
     }
 }
