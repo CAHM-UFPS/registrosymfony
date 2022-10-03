@@ -13,12 +13,15 @@ class Products
     private $id;
 
     #[MongoDB\Field(type: 'string')]
+    #[Assert\NotBlank]
     private string $name;
 
     #[MongoDB\Field(type: 'int')]
+    #[Assert\Positive]
     private int $quantityProduct;
 
     #[MongoDB\Field(type: 'int')]
+    #[Assert\Positive]
     private int $price;
 
     /**
