@@ -51,8 +51,14 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $form->getData();
+            $userData = $form->getData();
+            $user = $documentManager->getRepository(User::class)->findOneBy(['user' => $userData['user']]);
+
+            if (strcmp($userData['password'], $user->getPassword()) === 0) {
+                return $this->json(['message' => "Login"], Response::HTTP_OK);
+            }
         }
-        return $this->json();
+
+        return $this->json(["message" => 'User or Password incorrect'], Response::HTTP_BAD_REQUEST);
     }
 }
