@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user')]
 class UserController extends AbstractController
 {
-    #[Route('/create', name: 'createUser', methods: ['POST'])]
+    #[Route('/', name: 'createUser', methods: ['POST'])]
     public function create(DocumentManager $documentManager, Request $request, UserPasswordHasherInterface $hasher, MessageBusInterface $bus): Response
     {
         $user = new User();
@@ -55,6 +55,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $userData = $form->getData();
+
             $user = $documentManager->getRepository(User::class)->findOneBy(['user' => $userData['user']]);
 
             if ($hasher->isPasswordValid($user, $userData['password'])) {

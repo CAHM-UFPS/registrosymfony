@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductsController extends AbstractController
 {
 
-    #[Route('/create', name: 'createProduct', methods: ['POST'])]
+    #[Route('/', name: 'createProduct', methods: ['POST'])]
     public function create(DocumentManager $documentManager, Request $request): Response
     {
         $product = new Products();

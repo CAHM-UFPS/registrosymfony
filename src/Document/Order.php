@@ -12,9 +12,16 @@ class Order
     #[MongoDB\Id]
     private $id;
 
+    #[MongoDB\ReferenceOne(targetDocument: User::class)]
+    private User $user;
+
     //#[MongoDB\Field]
     //#[MongoDB\ReferenceMany(targetDocument: Products::class)]
     //private Collection $products;
+
+    #[MongoDB\Field(type: 'string')]
+    #[Assert\NotBlank]
+    private string $sendAddress;
 
     #[MongoDB\Field(type: 'int')]
     #[Assert\PositiveOrZero]
@@ -39,20 +46,38 @@ class Order
     }
 
     /**
-     * @return Collection
+     * @return User
      */
-    public function getProducts(): Collection
+    public function getUser(): User
     {
-        return $this->products;
+        return $this->user;
     }
 
     /**
-     * @param Collection $products
+     * @param User $user
      * @return Order
      */
-    public function setProducts(Collection $products): Order
+    public function setUser(User $user): Order
     {
-        $this->products = $products;
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSendAddress(): string
+    {
+        return $this->sendAddress;
+    }
+
+    /**
+     * @param string $sendAddress
+     * @return Order
+     */
+    public function setSendAddress(string $sendAddress): Order
+    {
+        $this->sendAddress = $sendAddress;
         return $this;
     }
 
