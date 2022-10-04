@@ -58,6 +58,10 @@ class UserController extends AbstractController
 
             $user = $documentManager->getRepository(User::class)->findOneBy(['user' => $userData['user']]);
 
+            if (!$user) {
+                return $this->json(["message" => 'User not found']);
+            }
+
             if ($hasher->isPasswordValid($user, $userData['password'])) {
                 return $this->json([$user->getToken()], Response::HTTP_OK);
             }

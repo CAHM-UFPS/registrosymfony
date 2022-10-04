@@ -2,23 +2,23 @@
 
 namespace App\Form;
 
-use App\Document\Order;
+use App\Document\OrderDetail;
+use App\Document\Products;
+use Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OrderType extends AbstractType
+class OrderDetailType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('sendAddress')
-            ->add('orderDetails', CollectionType::class, [
-                'entry_type' => OrderDetailType::class,
-                'by_reference' => false,
-                'allow_add' => true
+            ->add('product', DocumentType::class, [
+                'class' => Products::class
             ])
+            ->add('quantity', IntegerType::class)
         ;
     }
 
@@ -26,7 +26,7 @@ class OrderType extends AbstractType
     {
         $resolver->setDefaults([
             'csrf_protection' => false,
-            'data_class' => Order::class
+            'data_class' => OrderDetail::class
         ]);
     }
 

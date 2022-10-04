@@ -35,7 +35,7 @@ class OrderController extends AbstractController
             return $this->json($order);
         }
 
-        return $this->json($form->getErrors(), Response::HTTP_BAD_REQUEST);
+        return $this->json($form->getErrors(true), Response::HTTP_BAD_REQUEST);
     }
 
     #[Route('/list', name: 'listOrders', methods: ['GET'])]

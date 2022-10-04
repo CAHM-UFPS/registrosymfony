@@ -2,99 +2,93 @@
 
 namespace App\Document;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-//use MongoDB\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[MongoDB\Document]
 class Order
 {
     #[MongoDB\Id]
-    private $id;
+    private string $id;
 
     #[MongoDB\ReferenceOne(targetDocument: User::class)]
     private User $user;
 
-    //#[MongoDB\ReferenceMany(targetDocument: Products::class)]
-    //private Collection $products;
+    #[MongoDB\EmbedMany(targetDocument: OrderDetail::class)]
+    private Collection $orderDetails;
 
     #[MongoDB\Field(type: 'string')]
     #[Assert\NotBlank]
     private string $sendAddress;
 
-    #[MongoDB\Field(type: 'int')]
+    #[MongoDB\Field(type: 'float')]
     #[Assert\PositiveOrZero]
-    private int $totalOrder = 0;
+    private float $totalOrder;
 
-    /**
-     * @return mixed
-     */
-    public function getId()
+    public function __construct()
+    {
+        $this->orderDetails = new ArrayCollection();
+    }
+
+    public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     * @return Order
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @return User
-     */
     public function getUser(): User
     {
         return $this->user;
     }
 
-    /**
-     * @param User $user
-     * @return Order
-     */
-    public function setUser(User $user): Order
+    public function setUser(User $user): static
     {
         $this->user = $user;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
+    public function getOrderDetails(): Collection
+    {
+        return $this->orderDetails;
+    }
+
+    public function addOrderDetail(OrderDetail $orderDetail): static
+    {
+        if (!$this->orderDetails->contains($orderDetail)) {
+            $this->orderDetails->add($orderDetail);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderDetail(OrderDetail $orderDetail): bool
+    {
+        return $this->orderDetails->remove($orderDetail);
+    }
+
     public function getSendAddress(): string
     {
         return $this->sendAddress;
     }
 
-    /**
-     * @param string $sendAddress
-     * @return Order
-     */
-    public function setSendAddress(string $sendAddress): Order
+    public function setSendAddress(string $sendAddress): static
     {
         $this->sendAddress = $sendAddress;
+
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getTotalOrder(): int
+    public function getTotalOrder(): float
     {
         return $this->totalOrder;
     }
 
-    /**
-     * @param int $totalOrder
-     * @return Order
-     */
-    public function setTotalOrder(Products $products): Order
+    public function setTotalOrder(float $totalOrder): static
     {
-        $this->totalOrder += $products->getPrice() * $products->getQuantityProduct();
+        $this->totalOrder = $totalOrder;
+
         return $this;
     }
 }
