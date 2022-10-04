@@ -2,12 +2,12 @@
 
 namespace App\MessageHandler;
 
-use App\Message\WelcomeMessage;
+use App\Message\OrderMessage;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
-class WelcomeMessageHandler implements MessageHandlerInterface
+class OrderMessageHandler implements MessageHandlerInterface
 {
     private LoggerInterface $logger;
 
@@ -17,7 +17,7 @@ class WelcomeMessageHandler implements MessageHandlerInterface
         $this->logger = $logger;
     }
 
-    public function __invoke(WelcomeMessage $message)
+    public function __invoke(OrderMessage $message)
     {
         $this->logger->info($message->getMessage());
     }

@@ -23,9 +23,9 @@ class Order
     #[Assert\NotBlank]
     private string $sendAddress;
 
-    #[MongoDB\Field(type: 'float')]
-    #[Assert\PositiveOrZero]
-    private float $totalOrder;
+    //#[MongoDB\Field(type: 'float')]
+    //#[Assert\PositiveOrZero]
+    //private float $totalOrder;
 
     public function __construct()
     {
@@ -80,15 +80,15 @@ class Order
         return $this;
     }
 
-    public function getTotalOrder(): float
+    public function getTotalPrice(): float
     {
-        return $this->totalOrder;
-    }
+        $orders = $this->getOrderDetails();
+        $total = 0;
 
-    public function setTotalOrder(float $totalOrder): static
-    {
-        $this->totalOrder = $totalOrder;
+        foreach ($orders as $order) {
+            $total += $order->getProduct()->getPrice() * $order->getQuantity();
+        }
 
-        return $this;
+        return $total;
     }
 }

@@ -5,17 +5,19 @@ namespace App\Controller;
 use App\Document\Order;
 use App\Document\User;
 use App\Form\OrderType;
+use App\Message\OrderMessage;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/order')]
 class OrderController extends AbstractController
 {
     #[Route('/{token}', name: 'createOrder', methods: ['POST'])]
-    public function create(string $token, DocumentManager $documentManager, Request $request): Response
+    public function create(string $token, DocumentManager $documentManager, Request $request, MessageBusInterface $bus): Response
     {
         $user = $documentManager->getRepository(User::class)->findOneBy(['token' => $token]);
 
@@ -31,6 +33,7 @@ class OrderController extends AbstractController
             $order->setUser($user);
             $documentManager->persist($order);
             $documentManager->flush();
+            $bus->dispatch(new OrderMessage("Has buy your first product"));
 
             return $this->json($order);
         }
