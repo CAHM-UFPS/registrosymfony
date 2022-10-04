@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[MongoDB\Document]
 #[MongoDB\HasLifecycleCallbacks]
 #[Unique('email')]
+#[Unique('user')]
 class User implements PasswordAuthenticatedUserInterface
 {
     #[MongoDB\Id]

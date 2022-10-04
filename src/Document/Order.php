@@ -3,7 +3,7 @@
 namespace App\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use MongoDB\Collection;
+//use MongoDB\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[MongoDB\Document]
@@ -15,7 +15,6 @@ class Order
     #[MongoDB\ReferenceOne(targetDocument: User::class)]
     private User $user;
 
-    //#[MongoDB\Field]
     //#[MongoDB\ReferenceMany(targetDocument: Products::class)]
     //private Collection $products;
 
@@ -84,9 +83,8 @@ class Order
     /**
      * @return int
      */
-    public function getTotalOrder(Products $products): int
+    public function getTotalOrder(): int
     {
-        $this->totalOrder += $products->getPrice() * $products->getQuantityProduct();
         return $this->totalOrder;
     }
 
@@ -94,9 +92,9 @@ class Order
      * @param int $totalOrder
      * @return Order
      */
-    public function setTotalOrder(int $totalOrder): Order
+    public function setTotalOrder(Products $products): Order
     {
-        $this->totalOrder = $totalOrder;
+        $this->totalOrder += $products->getPrice() * $products->getQuantityProduct();
         return $this;
     }
 }
