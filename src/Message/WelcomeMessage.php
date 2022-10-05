@@ -5,27 +5,21 @@ namespace App\Message;
 class WelcomeMessage
 {
     private string $message;
-    private array $context;
+    private string $email;
 
-    public function __construct(string $message, array $context = [])
+    public function __construct(string $email, string $message)
     {
+        $this->email = $email;
         $this->message = $message;
-        $this->context = $context;
     }
 
-    /**
-     * @return string
-     */
     public function getMessage(): string
     {
         return $this->message;
     }
 
-    /**
-     * @return array
-     */
-    public function getContext(): array
+    public function getEmail(): string
     {
-        return $this->context;
+        return $this->email;
     }
 }

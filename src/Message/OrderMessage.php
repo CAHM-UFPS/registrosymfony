@@ -4,28 +4,22 @@ namespace App\Message;
 
 class OrderMessage
 {
+    private string $email;
     private string $message;
-    private array $context;
 
-    public function __construct(string $message, array $context = [])
+    public function __construct(string $email, string $message)
     {
+        $this->email = $email;
         $this->message = $message;
-        $this->context = $context;
     }
 
-    /**
-     * @return string
-     */
-    public function getMessage(): string
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getMessage(): array
     {
         return $this->message;
-    }
-
-    /**
-     * @return array
-     */
-    public function getContext(): array
-    {
-        return $this->context;
     }
 }

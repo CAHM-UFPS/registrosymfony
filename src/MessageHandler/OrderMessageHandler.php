@@ -19,6 +19,6 @@ class OrderMessageHandler implements MessageHandlerInterface
 
     public function __invoke(OrderMessage $message)
     {
-        $this->logger->info($message->getMessage());
+        $this->logger->info("User: ".$message->getEmail()." : ".$message->getMessage());
     }
 }

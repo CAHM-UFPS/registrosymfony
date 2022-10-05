@@ -16,9 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/order')]
 class OrderController extends AbstractController
 {
-    #[Route('/{token}', name: 'createOrder', methods: ['POST'])]
-    public function create(string $token, DocumentManager $documentManager, Request $request, MessageBusInterface $bus): Response
+    #[Route('/', name: 'createOrder', methods: ['POST'])]
+    public function create(DocumentManager $documentManager, Request $request, MessageBusInterface $bus): Response
     {
+        $token = $request->headers->get('Token');
         $user = $documentManager->getRepository(User::class)->findOneBy(['token' => $token]);
 
         if (!$user) {
@@ -33,17 +34,11 @@ class OrderController extends AbstractController
             $order->setUser($user);
             $documentManager->persist($order);
             $documentManager->flush();
-            $bus->dispatch(new OrderMessage("Has buy your first product"));
+            $bus->dispatch(new OrderMessage($user->getEmail(), "Has buy your first product"));
 
-            return $this->json($order);
+            return $this->json(["order" => $order->getId()], Response::HTTP_OK);
         }
 
         return $this->json($form->getErrors(true), Response::HTTP_BAD_REQUEST);
-    }
-
-    #[Route('/list', name: 'listOrders', methods: ['GET'])]
-    public function list(DocumentManager $documentManager): Response
-    {
-        return $this->json($documentManager->getRepository(Order::class)->findAll(), Response::HTTP_OK);
     }
 }

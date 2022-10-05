@@ -19,6 +19,6 @@ class WelcomeMessageHandler implements MessageHandlerInterface
 
     public function __invoke(WelcomeMessage $message)
     {
-        $this->logger->info($message->getMessage());
+        $this->logger->info("User: ".$message->getEmail()." : ".$message->getMessage());
     }
 }

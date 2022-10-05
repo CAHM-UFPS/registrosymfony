@@ -30,7 +30,7 @@ class UserController extends AbstractController
                 $user->setPassword($encryptPass); //Enviamos pass encriptada
                 $documentManager->persist($user);
                 $documentManager->flush();
-                $bus->dispatch(new WelcomeMessage("Welcome, do you have registered successfully"));
+                $bus->dispatch(new WelcomeMessage($user->getEmail(), "Welcome, do you have registered successfully"));
 
                 return $this->json([], Response::HTTP_NO_CONTENT);
             } else {
@@ -39,12 +39,6 @@ class UserController extends AbstractController
         }
 
         return $this->json($form->getErrors(true), Response::HTTP_BAD_REQUEST);
-    }
-
-    #[Route('/list', name: 'listUsers', methods: ['GET'])]
-    public function read(DocumentManager $documentManager): Response
-    {
-        return $this->json($documentManager->getRepository(User::class)->findAll(), Response::HTTP_OK);
     }
 
     #[Route('/login', name: 'login', methods: ['POST'])]
@@ -58,11 +52,7 @@ class UserController extends AbstractController
 
             $user = $documentManager->getRepository(User::class)->findOneBy(['user' => $userData['user']]);
 
-            if (!$user) {
-                return $this->json(["message" => 'User not found'], Response::HTTP_NOT_FOUND);
-            }
-
-            if ($hasher->isPasswordValid($user, $userData['password'])) {
+            if ($user && $hasher->isPasswordValid($user, $userData['password'])) {
                 return $this->json(['token' => $user->getToken()], Response::HTTP_OK);
             }
         }

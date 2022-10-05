@@ -17,15 +17,12 @@ class Order
     private User $user;
 
     #[MongoDB\EmbedMany(targetDocument: OrderDetail::class)]
+    #[Assert\Count(min: 1, minMessage: "Not have fields blank")]
     private Collection $orderDetails;
 
     #[MongoDB\Field(type: 'string')]
     #[Assert\NotBlank]
     private string $sendAddress;
-
-    //#[MongoDB\Field(type: 'float')]
-    //#[Assert\PositiveOrZero]
-    //private float $totalOrder;
 
     public function __construct()
     {

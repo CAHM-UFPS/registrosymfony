@@ -3,7 +3,6 @@
 namespace App\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[MongoDB\EmbeddedDocument]
 class OrderDetail
@@ -15,7 +14,6 @@ class OrderDetail
     private Products $product;
 
     #[MongoDB\Field(type: 'int')]
-    #[Assert\Positive]
     private int $quantity;
 
     public function getId(): string

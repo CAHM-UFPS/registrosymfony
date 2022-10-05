@@ -9,6 +9,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Positive;
 
 class OrderDetailType extends AbstractType
 {
@@ -16,9 +19,17 @@ class OrderDetailType extends AbstractType
     {
         $builder
             ->add('product', DocumentType::class, [
-                'class' => Products::class
+                'class' => Products::class,
+                'constraints' => [
+                    new NotBlank()
+                ]
             ])
-            ->add('quantity', IntegerType::class)
+            ->add('quantity', IntegerType::class, [
+                'constraints' => [
+                    new Positive(),
+                    new NotNull()
+                ]
+            ])
         ;
     }
 
