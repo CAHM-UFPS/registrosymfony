@@ -18,7 +18,7 @@ class OrderMessage
         return $this->email;
     }
 
-    public function getMessage(): array
+    public function getMessage(): string
     {
         return $this->message;
     }

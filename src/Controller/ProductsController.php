@@ -31,26 +31,16 @@ class ProductsController extends AbstractController
         return $this->json($form->getErrors(true), Response::HTTP_BAD_REQUEST);
     }
 
-    #[Route('/list', name: 'listAllProducts', methods: ['GET'])]
-    public function listAll(DocumentManager $documentManager) {
-        return $this->json($documentManager->getRepository(Products::class)->findAll(), Response::HTTP_OK);
-    }
-
-    #[Route('/list/name/{name}', name: 'listProductByName', methods: ['GET'])]
-    public function listByName(string $name, DocumentManager $documentManager): Response
+    #[Route('/list', name: 'listProducts', methods: ['GET'])]
+    public function list(DocumentManager $documentManager, Request $request): Response
     {
-        $products = $documentManager->getRepository(Products::class)->findBy(['name' => $name]);
+        $limit = $request->query->get('limit') ? : 0;
+        $name = $request->query->get('name') ? : '';
 
-        if (!$products) {
-            return $this->json(['message' => 'Product not found'], Response::HTTP_NOT_FOUND);
+        if ($limit == 0 && $name == '') {
+            return $this->json($documentManager->getRepository(Products::class)->findAll());
         }
 
-        return $this->json($products, Response::HTTP_OK);
-    }
-
-    #[Route('/list/{limit}', name: 'listProductsByLimit', methods: ['GET'])]
-    public function listByLimit(int $limit, DocumentManager $documentManager): Response
-    {
         return $this->json($documentManager->createQueryBuilder(Products::class)
             ->limit($limit)
             ->getQuery()
