@@ -34,11 +34,15 @@ class ProductsController extends AbstractController
     #[Route('/list', name: 'listProducts', methods: ['GET'])]
     public function list(DocumentManager $documentManager, Request $request): Response
     {
-        $limit = $request->query->get('limit') ? : 0;
+        $limit = intval($request->query->get('limit')) ? : 0;
         $name = $request->query->get('name') ? : '';
 
+        if ($limit<0) {
+            return $this->json(["message" => 'Limit should bigger than zero'], Response::HTTP_BAD_REQUEST);
+        }
+
         if ($limit == 0 && $name == '') {
-            return $this->json($documentManager->getRepository(Products::class)->findAll());
+            return $this->json($documentManager->getRepository(Products::class)->findAll(), Response::HTTP_OK);
         }
 
         return $this->json($documentManager->createQueryBuilder(Products::class)
