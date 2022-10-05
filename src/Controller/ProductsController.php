@@ -35,7 +35,7 @@ class ProductsController extends AbstractController
     public function list(DocumentManager $documentManager, Request $request): Response
     {
         $limit = intval($request->query->get('limit')) ? : 0;
-        $name = $request->query->get('name') ? : '';
+        $name = ucfirst($request->query->get('name')) ? : '';
 
         if ($limit<0) {
             return $this->json(["message" => 'Limit should bigger than zero'], Response::HTTP_BAD_REQUEST);
