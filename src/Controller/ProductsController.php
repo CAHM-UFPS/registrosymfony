@@ -42,6 +42,7 @@ class ProductsController extends AbstractController
         }
 
         return $this->json($documentManager->createQueryBuilder(Products::class)
+            ->field('name')->equals(new \MongoDB\BSON\Regex("$name"))
             ->limit($limit)
             ->getQuery()
             ->execute(),
