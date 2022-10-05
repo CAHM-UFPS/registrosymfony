@@ -36,17 +36,6 @@ class ProductsController extends AbstractController
         return $this->json($documentManager->getRepository(Products::class)->findAll(), Response::HTTP_OK);
     }
 
-    #[Route('/list/{limit}', name: 'listProductsByLimit', methods: ['GET'])]
-    public function listByLimit(int $limit, DocumentManager $documentManager): Response
-    {
-        return $this->json($documentManager->createQueryBuilder(Products::class)
-            ->limit($limit)
-            ->getQuery()
-            ->execute(),
-            Response::HTTP_OK
-        );
-    }
-
     #[Route('/list/name/{name}', name: 'listProductByName', methods: ['GET'])]
     public function listByName(string $name, DocumentManager $documentManager): Response
     {
@@ -57,5 +46,16 @@ class ProductsController extends AbstractController
         }
 
         return $this->json($products, Response::HTTP_OK);
+    }
+
+    #[Route('/list/{limit}', name: 'listProductsByLimit', methods: ['GET'])]
+    public function listByLimit(int $limit, DocumentManager $documentManager): Response
+    {
+        return $this->json($documentManager->createQueryBuilder(Products::class)
+            ->limit($limit)
+            ->getQuery()
+            ->execute(),
+            Response::HTTP_OK
+        );
     }
 }
