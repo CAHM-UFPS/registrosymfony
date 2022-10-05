@@ -117,3 +117,41 @@
         "price": 2500
     }
   ]
+  
+  * 137.184.57.62/products/list?name={value}
+  
+  ###### Example Output:
+  
+  > [
+     {
+        "id": "633c474676bad2ce9504fcf6",
+        "name": "Submarinos",
+        "quantityProduct": 30,
+        "price": 1200
+     },
+     {
+        "id": "633de12eedfa8b8bc00b6b71",
+        "name": "Submarino Fresa",
+        "quantityProduct": 30,
+        "price": 1800
+     }
+   ]
+  
+  * 137.184.57.62/products/list?limit={value}&name={value}
+  
+  ###### Example Output:
+  
+  > [
+     {
+        "id": "633c474676bad2ce9504fcf6",
+        "name": "Submarinos",
+        "quantityProduct": 30,
+        "price": 1200
+     },
+     {
+        "id": "633de12eedfa8b8bc00b6b71",
+        "name": "Submarino Fresa",
+        "quantityProduct": 30,
+        "price": 1800
+     }
+   ]
